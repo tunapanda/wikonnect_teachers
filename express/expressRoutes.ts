@@ -1,6 +1,5 @@
 import express from 'express';
 import path from 'path';
-import fsExtra from 'fs-extra';
 import FormData from 'form-data';
 import fs from 'fs';
 import * as H5P from '../src';
@@ -88,7 +87,7 @@ export default function (
 
 
 
-        const writeStream = fsExtra.createWriteStream(
+        const writeStream = fs.createWriteStream(
             "h5p/temporary-storage/" + contentId + ".h5p"
         );
         const packageFinishedPromise = new Promise(
