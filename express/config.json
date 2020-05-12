@@ -6,6 +6,5 @@
     "hubRegistrationEndpoint": "https://api.h5p.org/v1/sites",
     "hubContentTypesEndpoint": "https://api.h5p.org/v1/content-types/",
     "contentTypeCacheRefreshInterval": 86400000,
-    "enableLrsContentTypes": true,
-    "wikonnectApiUrl": "http://localhost:3000/api/v1/"
+    "enableLrsContentTypes": true
 }

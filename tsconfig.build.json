@@ -1,6 +1,6 @@
 {
     "extends": "./tsconfig.base.json",
-    "include": ["src/**/*.ts", "examples/**/*.ts"],
+    "include": ["src/**/*.ts", "express/**/*.ts"],
     "compilerOptions": {
         "declaration": true,
         "outDir": "./build"

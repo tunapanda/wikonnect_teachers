@@ -1,4 +1,4 @@
-build/examples
+build/express
 node_modules/
 examples/
 h5p/

@@ -1,7 +1,7 @@
 {
-    "name": "h5p-nodejs-library",
+    "name": "wikonnect-teach",
     "version": "2.0.0",
-    "description": "The H5P-Nodejs-library is a port of the H5P-Editor-PHP-library and the H5P-PHP-Library for Nodejs.",
+    "description": "The teachers platform on wikonnect",
     "scripts": {
         "start": "ts-node-dev express/express.ts",
         "prepare": "npm run download:content-type-cache && npm run download:content && npm run download:core && npm run build",
@@ -51,6 +51,7 @@
         "axios-fileupload": "0.0.1",
         "crc": "^3.8.0",
         "debug": "^4.1.1",
+        "dotenv": "^8.2.0",
         "escape-html": "^1.0.3",
         "express-handlebars": "^4.0.4",
         "express-session": "^1.17.1",
