@@ -38,21 +38,12 @@ export default function (): express.Router {
   });
 
   router.post('/auth', async (req, res) => {
-    let _url = config.wikonnectApiUrl + "auth"
+    console.log(req);
 
-  
-      .then(function (response) {
-        console.log(response.data.token)
-        if (req.session.token) {
-          req.session.destroy();
-        }
-        req.session.token = response.data.token;
-        req.session.username = req.body.username;
-        res.redirect('/');
-      })
-      .catch(function (error) {
-        res.redirect('/login?error=denied');
-      })
+
+        req.session.token = req.query.token;
+        req.session.username = req.query.username;
+    
   });
 
 
