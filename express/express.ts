@@ -138,7 +138,7 @@ const start = async () => {
         } else {
 
             if (req.query.error == "denied") {
-                res.render('login', { "msg": "Login failed, Check uername and password" })
+                res.render('login', { "msg": "Check username and password" })
             } else if (req.query.error == "permission") {
                 res.render('login', { "msg": "Login to view page" })
             } else {
