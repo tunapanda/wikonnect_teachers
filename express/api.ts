@@ -43,6 +43,7 @@ export default function (): express.Router {
 
         req.session.token = req.query.token;
         req.session.username = req.query.username;
+        res.redirect('/');
     
   });
 
