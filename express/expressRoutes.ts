@@ -119,7 +119,7 @@ export default function (
             },
             formData: {
                 'file': {
-                    'value': fs.createReadStream(path.join(__dirname, "../h5p/temporary-storage/" + contentId + ".h5p")),
+                    'value': fs.createReadStream("h5p/temporary-storage/" + contentId + ".h5p"),
                     'options': {
                         'filename': contentId + '.h5p',
                         'contentType': null
