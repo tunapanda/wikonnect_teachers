@@ -12,6 +12,9 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script src="tagsinput.js"></script>
+  <link href="tagsinput.css" rel="stylesheet" type="text/css">
   <style type="text/css">
     body {
       color: #566787;
@@ -19,6 +22,9 @@
       font-family: 'Varela Round', sans-serif;
       font-size: 13px;
     }
+
+
+
 
     .table-wrapper {
       background: #fff;
@@ -69,70 +75,7 @@
       margin-top: 2px;
     }
 
-    table.table tr th,
-    table.table tr td {
-      border-color: #e9e9e9;
-      padding: 12px 15px;
-      vertical-align: middle;
-    }
 
-    table.table tr th:first-child {
-      width: 60px;
-    }
-
-    table.table tr th:last-child {
-      width: 100px;
-    }
-
-    table.table-striped tbody tr:nth-of-type(odd) {
-      background-color: #fcfcfc;
-    }
-
-    table.table-striped.table-hover tbody tr:hover {
-      background: #f5f5f5;
-    }
-
-    table.table th i {
-      font-size: 13px;
-      margin: 0 5px;
-      cursor: pointer;
-    }
-
-    table.table td:last-child i {
-      opacity: 0.9;
-      font-size: 22px;
-      margin: 0 5px;
-    }
-
-    table.table td a {
-      font-weight: bold;
-      color: #566787;
-      display: inline-block;
-      text-decoration: none;
-      outline: none !important;
-    }
-
-    table.table td a:hover {
-      color: #2196F3;
-    }
-
-    table.table td a.edit {
-      color: #FFC107;
-    }
-
-    table.table td a.delete {
-      color: #F44336;
-    }
-
-    table.table td i {
-      font-size: 19px;
-    }
-
-    table.table .avatar {
-      border-radius: 50%;
-      vertical-align: middle;
-      margin-right: 10px;
-    }
 
     .pagination {
       float: right;
@@ -281,6 +224,118 @@
     .modal form label {
       font-weight: normal;
     }
+
+    .divTable {
+      display: table;
+      width: 100%;
+    }
+
+    .divTableRow {
+      display: table-row;
+    }
+
+    .divTableHeading {
+      background-color: #EEE;
+      display: table-header-group;
+    }
+
+    .divTableCell,
+    .divTableHead {
+      border: 1px solid #999999;
+      display: table-cell;
+      padding: 3px 10px;
+    }
+
+    .divTableHeading {
+      background-color: #EEE;
+      display: table-header-group;
+      font-weight: bold;
+    }
+
+    .divTableFoot {
+      background-color: #EEE;
+      display: table-footer-group;
+      font-weight: bold;
+    }
+
+    .divTableBody {
+      display: table-row-group;
+    }
+
+    .divTable {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    .divTableHead {
+      background-color: #eee;
+      font-weight: bold;
+    }
+
+    .divTableHead,
+    .divTableCell {
+      border: 0.125em solid #333;
+      line-height: 1.5;
+      padding: 0.75em;
+      text-align: left;
+    }
+
+    /* Stack rows vertically on small screens */
+    @media (max-width: 30em) {
+
+      /* Hide column labels */
+      .divTableHeading>.divTableRow {
+        position: absolute;
+        top: -9999em;
+        left: -9999em;
+      }
+
+      .divTableRow {
+        border: 0.125em solid #333;
+        border-bottom: 0;
+      }
+
+      /* Leave a space between table rows */
+      .divTableRow+.divTableRow {
+        margin-top: 1.5em;
+      }
+
+      /* Get table cells to act like rows */
+      .divTableRow,
+      .divTableCell {
+        display: block;
+      }
+
+      .divTableCell {
+        border: none;
+        border-bottom: 0.125em solid #333;
+        /* Leave a space for data labels */
+        padding-left: 50%;
+      }
+
+      /* Add data labels */
+      .divTableCell:before {
+        content: attr(data-label);
+        display: inline-block;
+        font-weight: bold;
+        line-height: 1.5;
+        margin-left: -100%;
+        width: 100%;
+      }
+    }
+
+    /* Stack labels vertically on smaller screens */
+    @media (max-width: 20em) {
+      .divTableCell {
+        padding-left: 0.75em;
+      }
+
+      .divTableCell:before {
+        display: block;
+        margin-bottom: 0.75em;
+        margin-left: 0;
+      }
+    }
   </style>
   <script type="text/javascript">
     $(document).ready(function () {
@@ -306,6 +361,11 @@
         }
       });
     });
+
+
+
+
+
   </script>
 </head>
 
@@ -325,57 +385,58 @@
           </div>
         </div>
       </div>
-      <table class="table table-striped table-hover">
-        <thead>
-          <tr>
-            {{!-- <th>
-              <span class="custom-checkbox">
-                <input type="checkbox" id="selectAll">
-                <label for="selectAll"></label>
-              </span>
-            </th> --}}
-            <th>Name</th>
-            <th>Description</th>
-            <th>Creation Date</th>
-            {{!-- <th>Actions</th>
-            <th>Publish</th> --}}
 
-          </tr>
-        </thead>
-        <tbody>
 
+
+
+
+
+
+      <div class="divTable">
+        <div class="divTableHeading">
+          <div class="divTableRow">
+            <div class="divTableHead">Title</div>
+            <div class="divTableHead">Description</div>
+            <div class="divTableHead">Date Created</div>
+            {{!-- <div class="divTableHead">h5P</div>
+            <div class="divTableHead">Thumbnail</div>
+            <div class="divTableHead">Wikonnect</div> --}}
+            <div class="divTableHead">Publish</div>
+
+          </div>
+        </div>
+        <div class="divTableBody">
 
           {{#each chapters}}
+            <div class="divTableRow">
+              <div class="divTableCell" data-label="Title">{{this.name}}</div>
+              <div class="divTableCell" data-label="Description">{{this.description}}</div>
+              <div class="divTableCell" data-label="Date Created">{{this.createdAt}}</div>
+              {{!-- <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary" href="#"
+                  role="button">Upload h5p</a></div>
+              <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary" href="#"
+                  role="button">Upload thumbnail</a></div>
+             
+              <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary" href="#"
+                  role="button">View on Wikonnect</a></div> --}}
+              <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-danger" href="#"
+                  role="button">Unpublish</a></div>
+            </div>
 
-          <tr>
-            {{!-- <td>
-              <span class="custom-checkbox">
-                <input type="checkbox" id="checkbox1" name="options[]" value="1">
-                <label for="checkbox1"></label>
-              </span>
-            </td> --}}
-            <td>{{this.name}}</td>
-            <td>{{this.description}}</td>
-
-
-            <td>{{this.createdAt}}</td>
-            {{!-- <td>
-              <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-            </td>
-
-            <td>
-
-              <a name="" id="" class="btn btn-success" href="#" role="button">Publish</a>
-              {{!-- {{this.status}} 
-            </td> --}}
-          </tr>
           {{/each}}
 
-        </tbody>
-      </table>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
       {{!-- <div class="clearfix">
         <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
         <ul class="pagination">
@@ -407,8 +468,12 @@
 
             <div class="form-group">
               <label>Description</label>
-              <textarea name="description" class="form-control" required></textarea>
+              <textarea data-role="tagsinput" name="description" class="form-control" required></textarea>
             </div>
+
+            <div class="form-group">
+              <label>Tags</label>
+              <input type="text" class="form-control" data-role="tagsinput" value=""> </div>
 
 
             {{!-- <div class="form-group">
@@ -486,6 +551,10 @@
       </div>
     </div>
   </div>
+
+
+
+
 </body>
 
 </html>

@@ -15,141 +15,143 @@ import startPageRenderer from './startPageRenderer';
 import User from './User';
 import session from 'express-session'
 
+
+
 /**
  * Displays links to the server at all available IP addresses.
  * @param port The port at which the server can be accessed.
  */
 function displayIps(port: string): void {
-    // tslint:disable-next-line: no-console
-    console.log('Example H5P NodeJs server is running:');
-    const networkInterfaces = os.networkInterfaces();
-    // tslint:disable-next-line: forin
-    for (const devName in networkInterfaces) {
-        networkInterfaces[devName]
-            .filter((int) => !int.internal)
-            .forEach((int) =>
-                // tslint:disable-next-line: no-console
-                console.log(
-                    `http://${int.family === 'IPv6' ? '[' : ''}${int.address}${
-                    int.family === 'IPv6' ? ']' : ''
-                    }:${port}`
-                )
-            );
-    }
+  // tslint:disable-next-line: no-console
+  console.log('Example H5P NodeJs server is running:');
+  const networkInterfaces = os.networkInterfaces();
+  // tslint:disable-next-line: forin
+  for (const devName in networkInterfaces) {
+    networkInterfaces[devName]
+      .filter((int) => !int.internal)
+      .forEach((int) =>
+        // tslint:disable-next-line: no-console
+        console.log(
+          `http://${int.family === 'IPv6' ? '[' : ''}${int.address}${
+          int.family === 'IPv6' ? ']' : ''
+          }:${port}`
+        )
+      );
+  }
 }
 
 const start = async () => {
-    await i18next
-        .use(i18nextNodeFsBackend)
-        .use(i18nextExpressMiddleware.LanguageDetector)
-        .init({
-            backend: {
-                loadPath: 'assets/translations/{{ns}}/{{lng}}.json'
-            },
-            debug: process.env.DEBUG && process.env.DEBUG.includes('i18n'),
-            defaultNS: 'server',
-            fallbackLng: 'en',
-            ns: ['server', 'storage-file-implementations'],
-            preload: ['en']
-        });
-
-    const config = await new H5P.H5PConfig(
-        new H5P.fsImplementations.JsonStorage(
-            path.resolve('express/config.json')
-        )
-    ).load();
-
-    const h5pEditor = H5P.fs(
-        config,
-        path.resolve('h5p/libraries'), // the path on the local disc where libraries should be stored
-        path.resolve('h5p/temporary-storage'), // the path on the local disc where temporary files (uploads) should be stored
-        path.resolve('h5p/content') // the path on the local disc where content is stored
-    );
-
-    const h5pPlayer = new H5P.H5PPlayer(
-        h5pEditor.libraryStorage,
-        h5pEditor.contentStorage,
-        config
-    );
-
-    const server = express();
-
-
-    server.use(session({
-        key: 'user_sid',
-        secret: 'somerandonstuffs',
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            expires: 600000
-        }
-    }));
-
-
-    server.engine('handlebars', exphbs());
-    server.set('view engine', 'handlebars');
-    server.enable('trust proxy');
-    server.use(bodyParser.json({ limit: '500mb' }));
-    server.use(
-        bodyParser.urlencoded({
-            extended: true
-        })
-    );
-    server.use(
-        fileUpload({
-            limits: { fileSize: h5pEditor.config.maxFileSize }
-        })
-    );
-
-    server.use((req, res, next) => {
-        req.user = new User();
-        next();
+  await i18next
+    .use(i18nextNodeFsBackend)
+    .use(i18nextExpressMiddleware.LanguageDetector)
+    .init({
+      backend: {
+        loadPath: 'assets/translations/{{ns}}/{{lng}}.json'
+      },
+      debug: process.env.DEBUG && process.env.DEBUG.includes('i18n'),
+      defaultNS: 'server',
+      fallbackLng: 'en',
+      ns: ['server', 'storage-file-implementations'],
+      preload: ['en']
     });
 
-    server.use(i18nextExpressMiddleware.handle(i18next));
+  const config = await new H5P.H5PConfig(
+    new H5P.fsImplementations.JsonStorage(
+      path.resolve('express/config.json')
+    )
+  ).load();
 
-    server.use(
-        h5pEditor.config.baseUrl,
-        H5P.adapters.express(
-            h5pEditor,
-            path.resolve('h5p/core'), // the path on the local disc where the files of the JavaScript client of the player are stored
-            path.resolve('h5p/editor') // the path on the local disc where the files of the JavaScript client of the editor are stored
-        )
-    );
+  const h5pEditor = H5P.fs(
+    config,
+    path.resolve('h5p/libraries'), // the path on the local disc where libraries should be stored
+    path.resolve('h5p/temporary-storage'), // the path on the local disc where temporary files (uploads) should be stored
+    path.resolve('h5p/content') // the path on the local disc where content is stored
+  );
 
-    server.use(h5pEditor.config.baseUrl, expressRoutes(h5pEditor, h5pPlayer));
-    server.use("/api", api());
+  const h5pPlayer = new H5P.H5PPlayer(
+    h5pEditor.libraryStorage,
+    h5pEditor.contentStorage,
+    config
+  );
 
-    server.use('/', routes());
-    server.get('/sess', function (req, res) {
-        res.send(req.session.token)
-    });
+  const server = express();
 
 
+  server.use(session({
+    key: 'user_sid',
+    secret: 'somerandonstuffs',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      expires: 600000
+    }
+  }));
+  server.use(express.static('public'))
 
-    server.get('/logout', function (req, res) {
-        req.session.destroy();
-        res.redirect('/login');
-    });
+  server.engine('handlebars', exphbs());
+  server.set('view engine', 'handlebars');
+  server.enable('trust proxy');
+  server.use(bodyParser.json({ limit: '500mb' }));
+  server.use(
+    bodyParser.urlencoded({
+      extended: true
+    })
+  );
+  server.use(
+    fileUpload({
+      limits: { fileSize: h5pEditor.config.maxFileSize }
+    })
+  );
 
-    server.get('/login', function (req, res) {
-        if (req.session.token) {
-            res.redirect('/');
-        } else {
+  server.use((req, res, next) => {
+    req.user = new User();
+    next();
+  });
 
-            if (req.query.error == "denied") {
-                res.render('login', { "msg": "Check username and password" })
-            } else if (req.query.error == "permission") {
-                res.render('login', { "msg": "Login to view page" })
-            } else {
-                res.render('login');
-            }
-        }
-    });
+  server.use(i18nextExpressMiddleware.handle(i18next));
 
-    const port = process.env.PORT || '8080';
-    displayIps(port);
-    server.listen(port);
+  server.use(
+    h5pEditor.config.baseUrl,
+    H5P.adapters.express(
+      h5pEditor,
+      path.resolve('h5p/core'), // the path on the local disc where the files of the JavaScript client of the player are stored
+      path.resolve('h5p/editor') // the path on the local disc where the files of the JavaScript client of the editor are stored
+    )
+  );
+
+  server.use(h5pEditor.config.baseUrl, expressRoutes(h5pEditor, h5pPlayer));
+  server.use("/api", api());
+
+  server.use('/', routes());
+  server.get('/sess', function (req, res) {
+    res.send(req.session.token)
+  });
+
+
+
+  server.get('/logout', function (req, res) {
+    req.session.destroy();
+    res.redirect('/login');
+  });
+
+  server.get('/login', function (req, res) {
+    if (req.session.token) {
+      res.redirect('/');
+    } else {
+
+      if (req.query.error == "denied") {
+        res.render('login', { "msg": "Check username and password" })
+      } else if (req.query.error == "permission") {
+        res.render('login', { "msg": "Login to view page" })
+      } else {
+        res.render('login');
+      }
+    }
+  });
+
+  const port = process.env.PORT || '8080';
+  displayIps(port);
+  server.listen(port);
 };
 
 start();

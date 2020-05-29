@@ -49,6 +49,19 @@ export default function (): express.Router {
   });
 
 
+  router.get('/thumbnail', async (req, res) => {
+    if (!req.session.token) {
+      res.redirect('/login?error=denied');
+    } else {
+
+      res.render('thumbnail', { "sess": req.session });
+
+      //Index shows list of chapters
+
+    }
+  });
+
+
 
 
 

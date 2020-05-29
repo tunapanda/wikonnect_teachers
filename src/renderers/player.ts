@@ -9,11 +9,11 @@ export default (model) => `
     <meta charset="utf-8">
     
     ${model.styles
-        .map((style) => `<link rel="stylesheet" href="${style}"/>`)
-        .join('\n    ')}
+    .map((style) => `<link rel="stylesheet" href="${style}"/>`)
+    .join('\n    ')}
     ${model.scripts
-        .map((script) => `<script src="${script}"></script>`)
-        .join('\n    ')}
+    .map((script) => `<script src="${script}"></script>`)
+    .join('\n    ')}
 
     <script>
         H5PIntegration = ${JSON.stringify(model.integration, null, 2)};
@@ -334,7 +334,16 @@ export default (model) => `
             <h2>Preview <b>H5P</b></h2>
           </div>
           <div class="col-sm-6">
-            
+          <a href="/" class="btn btn-primary" data-toggle="modal"><i
+          class="material-icons">&#xE88A;</i> <span>Go Home</span></a>
+
+
+          <a href="/h5p/edit/${model.contentId}" class="btn btn-warning" data-toggle="modal"><i
+          class="material-icons">&#xE254;</i> <span>Edit H5P</span></a>
+
+
+          <a href="/thumbnail" class="btn btn-success" data-toggle="modal"><i
+          class="material-icons">&#xE3F4;</i> <span>Create Thumbnail</span></a>
           </div>
         </div>
       </div>
