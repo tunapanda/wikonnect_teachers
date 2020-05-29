@@ -6,7 +6,6 @@ import path from 'path';
 import * as config from './config.json';
 import axios from 'axios';
 
-import multer from 'multer'
 import request from 'request'
 
 
@@ -20,7 +19,6 @@ import request from 'request'
 //   }
 // })
 
-var upload = multer({ dest: 'uploads/' })
 
 export default function (): express.Router {
   const router = express.Router();
@@ -134,7 +132,7 @@ export default function (): express.Router {
 
 
 
-  router.post('/chapters', async (req, res) => {
+  router.post('/chapters', async (req: any, res: any) => {
     let _url = config.wikonnectApiUrl + "chapters"
     console.log(req.body)
     console.log(_url)

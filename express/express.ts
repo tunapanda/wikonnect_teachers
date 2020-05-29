@@ -103,7 +103,7 @@ const start = async () => {
     })
   );
 
-  server.use((req, res, next) => {
+  server.use((req: any, res: any, next) => {
     req.user = new User();
     next();
   });
@@ -123,18 +123,18 @@ const start = async () => {
   server.use("/api", api());
 
   server.use('/', routes());
-  server.get('/sess', function (req, res) {
+  server.get('/sess', function (req: any, res: any) {
     res.send(req.session.token)
   });
 
 
 
-  server.get('/logout', function (req, res) {
+  server.get('/logout', function (req: any, res: any) {
     req.session.destroy();
     res.redirect('/login');
   });
 
-  server.get('/login', function (req, res) {
+  server.get('/login', function (req: any, res: any) {
     if (req.session.token) {
       res.redirect('/');
     } else {

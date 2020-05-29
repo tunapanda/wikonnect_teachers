@@ -6,7 +6,7 @@ export default function (): express.Router {
   const router = express.Router();
 
 
-  router.use((req, res, next) => {
+  router.use((req: any, res: any, next) => {
     console.log("Tisme:", new Date())
     console.log(req.body)
 
@@ -27,7 +27,7 @@ export default function (): express.Router {
 
 
 
-  router.get('/', async (req, res) => {
+  router.get('/', async (req: any, res: any) => {
     if (!req.session.token) {
       res.redirect('/login?error=denied');
     } else {
@@ -49,7 +49,7 @@ export default function (): express.Router {
   });
 
 
-  router.get('/thumbnail', async (req, res) => {
+  router.get('/thumbnail', async (req: any, res: any) => {
     if (!req.session.token) {
       res.redirect('/login?error=denied');
     } else {
