@@ -15,6 +15,8 @@ import startPageRenderer from './startPageRenderer';
 import User from './User';
 import session from 'express-session'
 
+import hbshelpers from 'handlebars-helpers';
+
 
 
 /**
@@ -87,9 +89,17 @@ const start = async () => {
     }
   }));
   server.use(express.static('public'))
+  const multihelpers = hbshelpers();
 
-  server.engine('handlebars', exphbs());
+  server.engine('handlebars', exphbs({
+    helpers: multihelpers
+  }));
   server.set('view engine', 'handlebars');
+
+
+
+
+
   server.enable('trust proxy');
   server.use(bodyParser.json({ limit: '500mb' }));
   server.use(

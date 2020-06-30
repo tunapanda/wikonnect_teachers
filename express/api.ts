@@ -113,7 +113,10 @@ export default function (): express.Router {
         request(options, function (error, response) {
           if (error) throw new Error(error);
           console.log(response.body);
+          res.redirect('/publish');
+
         });
+
       }
     });
 
@@ -140,8 +143,9 @@ export default function (): express.Router {
       "chapter": {
         "name": req.body.name,
         "description": req.body.description,
-        "status": "published",
+        "status": "draft",
         "creatorId": req.session.username,
+        "approved": false,
         "lessonId": "1"
       }
     }, { headers: { "Authorization": `Bearer ${req.session.token}` } })
@@ -162,6 +166,77 @@ export default function (): express.Router {
       })
 
   });
+
+
+
+
+
+
+  router.post('/publish', async (req: any, res: any) => {
+    let _url = config.wikonnectApiUrl + "chapters/" + req.session.chapter_id;
+    console.log(req.body)
+    console.log(_url)
+    axios.put(_url, {
+      "chapter": {
+
+        "status": "published",
+
+      }
+    }, { headers: { "Authorization": `Bearer ${req.session.token}` } })
+      .then(function (response) {
+
+        console.log("response.data")
+        console.log("response.data")
+
+        console.log(response.data)
+        req.session.chapter_id = response.data.chapter.id
+        // res.redirect('/');§
+        res.redirect('/publish?intent=success');
+
+      })
+      .catch(function (error) {
+        console.log("error")
+        res.redirect('/logout');
+      })
+
+  });
+
+
+  router.post('/unpublish', async (req: any, res: any) => {
+    let _url = config.wikonnectApiUrl + "chapters/" + req.session.chapter_id;
+    console.log(req.body)
+    console.log(_url)
+    axios.put(_url, {
+      "chapter": {
+
+        "status": "draft",
+
+      }
+    }, { headers: { "Authorization": `Bearer ${req.session.token}` } })
+      .then(function (response) {
+
+        console.log("response.data")
+        console.log("response.data")
+
+        console.log(response.data)
+        req.session.chapter_id = response.data.chapter.id
+        // res.redirect('/');§
+        res.redirect('/publish?intent=success');
+
+      })
+      .catch(function (error) {
+        console.log("error")
+        res.redirect('/logout');
+      })
+
+  });
+
+
+
+
+
+
+
 
 
   return router;

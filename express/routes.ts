@@ -62,6 +62,54 @@ export default function (): express.Router {
   });
 
 
+  router.get('/redirector/:id', async (req: any, res: any) => {
+    if (!req.session.token) {
+      res.redirect('/login?error=denied');
+    } else {
+      req.session.chapter_id = req.params.id
+      res.redirect('/' + req.query.intent);
+      //Index shows list of chapters
+
+    }
+  });
+
+
+
+
+
+  router.get('/publish', async (req: any, res: any) => {
+    if (!req.session.token) {
+      res.redirect('/login?error=denied');
+    } else {
+
+
+
+      let _url = config.wikonnectApiUrl + "chapters/" + req.session.chapter_id
+
+      axios.get(_url, { headers: { "Authorization": `Bearer ${req.session.token}` } })
+        .then(function (response) {
+
+          console.log("response.data")
+          console.log(response.data)
+          // res.render('home', { "sess": req.session });
+
+          res.render('success', { "chapter": response.data.chapter[0] });
+        })
+        .catch(function (error) {
+          res.redirect('/login?error=denied');
+
+        })
+
+
+
+
+
+      //Index shows list of chapters
+
+    }
+  });
+
+
 
 
 
