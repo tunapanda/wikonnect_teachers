@@ -399,6 +399,7 @@
             <div class="divTableHead">Description</div>
             <div class="divTableHead">Date Created</div>
             <div class="divTableHead">Thumbnail</div>
+            <div class="divTableHead">h5P</div>
             {{!-- <div class="divTableHead">h5P</div>
             
             <div class="divTableHead">Wikonnect</div> --}}
@@ -421,6 +422,16 @@
               {{else}}
                 <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-success"
                     href="redirector/{{this.id}}?intent=thumbnail" role="button">Upload thumbnail</a></div>
+              {{/if}}
+
+
+
+              {{#if this.content_uri}}
+                {{!-- <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary"
+                    href="/h5p/edit" role="button">Edit thumbnail</a></div> --}} uploaded
+              {{else}}
+                <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary"
+                    href="redirector/{{this.id}}?intent=h5p/new" role="button">Create h5p</a></div>
               {{/if}}
               {{!-- <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary" href="#"
                   role="button">Upload h5p</a></div>
