@@ -98,11 +98,11 @@ export default function (): express.Router {
           'method': 'POST',
           'url': _url,
           'headers': {
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoidXNlcjEiLCJlbWFpbCI6InVzZXIxQHdpa29ubmVjdC5vcmciLCJ1c2VybmFtZSI6InVzZXIxIiwibGFzdFNlZW4iOiIyMDE3LTEyLTIwIDE5OjE3OjEwIiwibGFzdElwIjoiMjQ1LjE5LjIyNS41NSIsIm1ldGFkYXRhIjp7Iml0ZW1zIjp7InF0eSI6MjQsInByb2R1Y3QiOiJEaWFwZXIifSwiY3VzdG9tZXIiOiJMaWx5IEJ1c2gifSwiY3JlYXRlZEF0IjoiMjAxNy0xMi0yMFQxNjoxNzoxMC4wMDBaIiwidXBkYXRlZEF0IjoiMjAxNy0xMi0yMFQxNjoxNzoxMC4wMDBaIiwicHJvZmlsZVVyaSI6bnVsbCwiaW52aXRlQ29kZSI6bnVsbCwicm9sZSI6ImFkbWluIn0sImV4cCI6MTU5MDYzMDU2NiwiaWF0IjoxNTkwMDI1NzY2fQ.4LP4xtmUwOqDLhSJlXj01gg1fjosjoupHeS6_ELwgR8'
+            'Authorization': 'Bearer ' + req.session.chapter_id
           },
           formData: {
             'file': {
-              'value': fs.createReadStream('uploads/i.jpg'),
+              'value': fs.createReadStream(temp_file2),
               'options': {
                 'filename': 'i.jpg',
                 'contentType': null
