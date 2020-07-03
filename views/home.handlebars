@@ -426,9 +426,8 @@
 
 
 
-              {{#if this.content_uri}}
-                {{!-- <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary"
-                    href="/h5p/edit" role="button">Edit thumbnail</a></div> --}} uploaded
+              {{#if this.contentUri}}
+                <div class="divTableCell" data-label="Wikonnect"><span class="badge badge-success">Uploaded</span></div>
               {{else}}
                 <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary"
                     href="redirector/{{this.id}}?intent=h5p/new" role="button">Create h5p</a></div>
@@ -442,15 +441,33 @@
              
               <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary" href="#"
                   role="button">View on Wikonnect</a></div> --}}
-              {{#is this.status 'draft'}}
-                <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-success"
-                    href="redirector/{{this.id}}?intent=publish" role="button">Publish</a></div>
-              {{/is}}
 
-              {{#is this.status 'published'}}
-                <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-danger"
-                    href="redirector/{{this.id}}?intent=publish" role="button">Un Publish</a></div>
-              {{/is}}
+
+
+
+              {{#if this.contentUri }}
+                {{#if this.imageUrl: }}
+                  {{#is this.status 'draft'}}
+
+                    <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-success"
+                        href="redirector/{{this.id}}?intent=publish" role="button">Publish</a></div>
+
+                  {{/is}}
+
+                  {{#is this.status 'published'}}
+                    <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-danger"
+                        href="redirector/{{this.id}}?intent=publish" role="button">Un Publish</a></div>
+                  {{/is}}
+
+                {{else}}
+                  <div class="divTableCell" data-label="Wikonnect">requires thumbnail</div>
+                {{/if}}
+
+
+              {{else}}
+
+                <div class="divTableCell" data-label="Wikonnect">cannot publish add h5p</div>
+              {{/if}}
             </div>
 
           {{/each}}

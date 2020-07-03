@@ -31,7 +31,7 @@ export default function (): express.Router {
     if (!req.session.token) {
       res.redirect('/login?error=denied');
     } else {
-      let _url = config.wikonnectApiUrl + "chapters?creator_id=" + req.session.username
+      let _url = config.wikonnectApiUrl + "chapters/teach"
 
       axios.get(_url, { headers: { "Authorization": `Bearer ${req.session.token}` } })
         .then(function (response) {
@@ -84,7 +84,7 @@ export default function (): express.Router {
 
 
 
-      let _url = config.wikonnectApiUrl + "chapters/" + req.session.chapter_id
+      let _url = config.wikonnectApiUrl + "chapters/teach/" + req.session.chapter_id
 
       axios.get(_url, { headers: { "Authorization": `Bearer ${req.session.token}` } })
         .then(function (response) {
