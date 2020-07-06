@@ -1,7 +1,7 @@
 module.exports = {
     apps : [{
       name: 'teach',
-      script: 'wikonnect-teacher/build/express/express.js',
+      script: 'build/express/express.js',
       watch: ['express'],
       watch_delay: 1000,
       ignore_watch: ['uploads', 'h5p', 'node_modules', 'build' ]
