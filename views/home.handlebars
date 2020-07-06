@@ -401,7 +401,7 @@
             <div class="divTableHead">Thumbnail</div>
             <div class="divTableHead">h5P</div>
             {{!-- <div class="divTableHead">h5P</div>
-            
+
             <div class="divTableHead">Wikonnect</div> --}}
             <div class="divTableHead">Publish</div>
 
@@ -410,75 +410,54 @@
         <div class="divTableBody">
 
           {{#each chapters}}
-            <div class="divTableRow">
-              <div class="divTableCell" data-label="Title">{{this.name}}</div>
-              <div class="divTableCell" data-label="Description">{{this.description}}</div>
-              <div class="divTableCell" data-label="Date Created">{{this.createdAt}}</div>
+          <div class="divTableRow">
+            <div class="divTableCell" data-label="Title">{{this.name}}</div>
+            <div class="divTableCell" data-label="Description">{{this.description}}</div>
+            <div class="divTableCell" data-label="Date Created">{{this.createdAt}}</div>
 
 
-              {{#if this.imageUrl}}
-                <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary"
-                    href="redirector/{{this.id}}?intent=thumbnail" role="button">Edit thumbnail</a></div>
-              {{else}}
-                <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-success"
-                    href="redirector/{{this.id}}?intent=thumbnail" role="button">Upload thumbnail</a></div>
-              {{/if}}
+            {{#if this.imageUrl}}
+            <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary"
+                href="redirector/{{this.id}}?intent=thumbnail" role="button">Edit thumbnail</a></div>
+            {{else}}
+            <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-success"
+                href="redirector/{{this.id}}?intent=thumbnail" role="button">Upload thumbnail</a></div>
+            {{/if}}
 
 
 
-              {{#if this.content_uri}}
-                {{!-- <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary"
+            {{#if this.content_uri}}
+            {{!-- <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary"
                     href="/h5p/edit" role="button">Edit thumbnail</a></div> --}} uploaded
-              {{else}}
-                <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary"
-                    href="redirector/{{this.id}}?intent=h5p/new" role="button">Create h5p</a></div>
-              {{/if}}
-              {{!-- <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary" href="#"
+            {{else}}
+            <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary"
+                href="redirector/{{this.id}}?intent=h5p/new" role="button">Create h5p</a></div>
+            {{/if}}
+            {{!-- <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary" href="#"
                   role="button">Upload h5p</a></div>
               <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary" href="#"
                   role="button">Upload thumbnail</a></div>
 
-              
-             
+
+
               <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-primary" href="#"
                   role="button">View on Wikonnect</a></div> --}}
-              {{#is this.status 'draft'}}
-                <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-success"
-                    href="redirector/{{this.id}}?intent=publish" role="button">Publish</a></div>
-              {{/is}}
+            {{#is this.status 'draft'}}
+            <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-success"
+                href="redirector/{{this.id}}?intent=publish" role="button">Publish</a></div>
 
-              {{#is this.status 'published'}}
-                <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-danger"
-                    href="redirector/{{this.id}}?intent=publish" role="button">Un Publish</a></div>
-              {{/is}}
-            </div>
+            {{/is}}
+
+            {{#is this.status 'published'}}
+            <div class="divTableCell" data-label="Wikonnect"><a name="" id="" class="btn btn-danger"
+                href="redirector/{{this.id}}?intent=publish" role="button">Un Publish</a></div>
+            {{/is}}
+          </div>
 
           {{/each}}
 
         </div>
       </div>
-
-
-
-
-
-
-
-
-
-
-      {{!-- <div class="clearfix">
-        <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-        <ul class="pagination">
-          <li class="page-item disabled"><a href="#">Previous</a></li>
-          <li class="page-item"><a href="#" class="page-link">1</a></li>
-          <li class="page-item"><a href="#" class="page-link">2</a></li>
-          <li class="page-item active"><a href="#" class="page-link">3</a></li>
-          <li class="page-item"><a href="#" class="page-link">4</a></li>
-          <li class="page-item"><a href="#" class="page-link">5</a></li>
-          <li class="page-item"><a href="#" class="page-link">Next</a></li>
-        </ul>
-      </div> --}}
     </div>
   </div>
   <!-- Edit Modal HTML -->
@@ -504,19 +483,6 @@
             <div class="form-group">
               <label>Tags</label>
               <input type="text" class="form-control" data-role="tagsinput" value=""> </div>
-
-
-
-            {{!-- <div class="form-group">
-              <label>Key Words</label>
-              <textarea class="form-control" required></textarea>
-            </div> --}}
-
-            {{!-- <div class="form-group">
-              <label>Thumbnail</label>
-              <input type="file" class="form-control" required>
-            </div> --}}
-
           </div>
           <div class="modal-footer">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -582,10 +548,6 @@
       </div>
     </div>
   </div>
-
-
-
-
 </body>
 
 </html>

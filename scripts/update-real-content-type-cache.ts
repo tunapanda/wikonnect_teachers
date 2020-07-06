@@ -11,6 +11,9 @@ import H5PConfig from '../src/implementation/H5PConfig';
 import InMemoryStorage from '../src/implementation/InMemoryStorage';
 import { IKeyValueStorage } from '../src/types';
 
+import { Logger } from "tslog";
+const log: Logger = new Logger({ name: "myLogger" });
+
 const start = async () => {
     const keyValueStorage: IKeyValueStorage = new InMemoryStorage();
     const config: H5PConfig = new H5PConfig(keyValueStorage);
@@ -30,7 +33,7 @@ const start = async () => {
         path.resolve('test/data/content-type-cache/real-content-types.json'),
         { contentTypes }
     );
-    console.log(
+    log.info(
         'Wrote current content type cache to test/content-type-cache/real-content-types.json'
     );
 };

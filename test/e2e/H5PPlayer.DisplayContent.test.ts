@@ -15,13 +15,13 @@ const extractedContentPath = `${path.resolve(
     ''
 )}/test/data/hub-content-extracted/`;
 
-// TODO: Replace console.log with logger.
+// TODO: Replace log.info with logger.
 
 fs.readdir(contentPath, (fsError, files) => {
     Promise.all(
         files.map((file) => {
             // tslint:disable-next-line: no-console
-            console.log(`extracting: ${file}`);
+            log.info(`extracting: ${file}`);
             return PackageImporter.extractPackage(
                 `${contentPath}/${file}`,
                 `${extractedContentPath}/${file}`,
@@ -66,13 +66,13 @@ fs.readdir(contentPath, (fsError, files) => {
         server.use((error, req, res, next) => {
             if (error) {
                 // tslint:disable-next-line: no-console
-                console.log(error);
+                log.error(error);
                 process.exit(1);
             }
         });
         server.listen(8080, () => {
             // tslint:disable-next-line: no-console
-            console.log(`server running on http://localhost: ${8080}`);
+            log.info(`server running on http://localhost: ${8080}`);
             puppeteer.launch({ devtools: true }).then((browser) => {
                 fs.readdir(
                     extractedContentPath,
@@ -85,7 +85,7 @@ fs.readdir(contentPath, (fsError, files) => {
                                             browser.newPage().then((page) => {
                                                 page.on('pageerror', (msg) => {
                                                     // tslint:disable-next-line: no-console
-                                                    console.log(
+                                                    log.info(
                                                         `${file}: ERROR`,
                                                         msg
                                                     );
@@ -106,9 +106,7 @@ fs.readdir(contentPath, (fsError, files) => {
                                                     setTimeout(() => {
                                                         page.close();
                                                         // tslint:disable-next-line: no-console
-                                                        console.log(
-                                                            `${file}: OK`
-                                                        );
+                                                        log.info(`${file}: OK`);
                                                         resolve();
                                                     }, 1000);
                                                 });
@@ -117,7 +115,7 @@ fs.readdir(contentPath, (fsError, files) => {
                                 )
                                 .catch((error) => {
                                     // tslint:disable-next-line: no-console
-                                    console.log(error);
+                                    log.error(error);
                                     process.exit(1);
                                 });
                         });
