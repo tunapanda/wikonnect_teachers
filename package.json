@@ -24,13 +24,6 @@
     "format": "npx prettier --write \"{src,test,express}/**/*.ts\"",
     "semantic-release": "semantic-release"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && npm run format:check",
-      "pre-push": "npm run ci",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "contributors": [
     {
       "name": "Sebastian Rettig",

@@ -60,35 +60,23 @@ export default function (): express.Router {
         log.info(req.files.file); // the uploaded file object
         const thumb = req.files.file;
         const stamp = Date.now();
-        const temp_file = './uploads/thumb_' + stamp + '.jpg';
-        const temp_file2 = 'uploads/thumb_' + stamp + '.jpg';
-        thumb.mv(temp_file, (err) => {
+        const tempFile = `./uploads/thumb_${stamp}.jpg`;
+        const tempFile2 = `uploads/thumb_${stamp}.jpg`;
+        thumb.mv(tempFile, (err) => {
             if (err) {
                 log.error('save failed');
                 log.error(err);
             } else {
-                log.info(
-                    'posting to',
-                    config.wikonnectApiUrl +
-                        'chapters/' +
-                        req.session.chapter_id +
-                        '/chapter-image'
-                ); // the uploaded file object
-                const _url =
-                    config.wikonnectApiUrl +
-                    'chapters/' +
-                    req.session.chapter_id +
-                    '/chapter-image';
+                log.info( 'posting to', `${config.wikonnectApiUrl}chapters/${req.session.chapter_id}/chapter-image`); // the uploaded file object
+                const _url =  `${config.wikonnectApiUrl}chapters/${req.session.chapter_id}/chapter-image`;
                 const options = {
                     method: 'POST',
                     url: _url,
                     headers: {
-                        Authorization:
-                            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoidXNlcjEiLCJlbWFpbCI6InVzZXIxQHdpa29ubmVjdC5vcmciLCJ1c2VybmFtZSI6InVzZXIxIiwibGFzdFNlZW4iOiIyMDE3LTEyLTIwIDE5OjE3OjEwIiwibGFzdElwIjoiMjQ1LjE5LjIyNS41NSIsIm1ldGFkYXRhIjp7Iml0ZW1zIjp7InF0eSI6MjQsInByb2R1Y3QiOiJEaWFwZXIifSwiY3VzdG9tZXIiOiJMaWx5IEJ1c2gifSwiY3JlYXRlZEF0IjoiMjAxNy0xMi0yMFQxNjoxNzoxMC4wMDBaIiwidXBkYXRlZEF0IjoiMjAxNy0xMi0yMFQxNjoxNzoxMC4wMDBaIiwicHJvZmlsZVVyaSI6bnVsbCwiaW52aXRlQ29kZSI6bnVsbCwicm9sZSI6ImFkbWluIn0sImV4cCI6MTU5MDYzMDU2NiwiaWF0IjoxNTkwMDI1NzY2fQ.4LP4xtmUwOqDLhSJlXj01gg1fjosjoupHeS6_ELwgR8'
-                    },
+                        "Authorization": `Bearer ${req.session.token}`},
                     formData: {
                         file: {
-                            value: fs.createReadStream(temp_file2),
+                            value: fs.createReadStream(tempFile2),
                             options: {
                                 filename: 'i.jpg',
                                 contentType: null
@@ -107,12 +95,12 @@ export default function (): express.Router {
     });
 
     router.post('/chapters', async (req: any, res: any) => {
-        let _url = config.wikonnectApiUrl + 'chapters';
+        const url = `${config.wikonnectApiUrl }chapters`;
         log.info(req.body);
-        log.info(_url);
+        log.info(url);
         axios
             .post(
-                _url,
+                url,
                 {
                     chapter: {
                         name: req.body.name,
@@ -141,8 +129,7 @@ export default function (): express.Router {
     });
 
     router.post('/publish', async (req: any, res: any) => {
-        let _url =
-            config.wikonnectApiUrl + 'chapters/' + req.session.chapter_id;
+        let _url =`${config.wikonnectApiUrl}chapters/${req.session.chapter_id}`;
         log.info(req.body);
         log.info(_url);
         axios
@@ -165,8 +152,7 @@ export default function (): express.Router {
             });
     });
     router.post('/unpublish', async (req: any, res: any) => {
-        let _url =
-            config.wikonnectApiUrl + 'chapters/' + req.session.chapter_id;
+        const _url =`${config.wikonnectApiUrl}chapters/${req.session.chapter_id}`;
         log.info(req.body);
         log.info(_url);
         axios
