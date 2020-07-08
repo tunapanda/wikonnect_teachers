@@ -80,9 +80,7 @@ export default function (
             `attachment; filename=${contentId}.h5p`
         );
 
-        const writeStream = fs.createWriteStream(
-            'h5p/temporary-storage/' + contentId + '.h5p'
-        );
+        const writeStream = fs.createWriteStream(`h5p/temporary-storage/${contentId}.h5p`);
         const packageFinishedPromise = new Promise((resolve) => {
             writeStream.on('close', () => {
                 resolve();
@@ -92,27 +90,21 @@ export default function (
         await packageFinishedPromise;
         writeStream.close();
 
-        let _url =
-            config.wikonnectApiUrl +
-            'chapters/' +
-            req.session.chapter_id +
-            '/upload';
+        const url = `${config.wikonnectApiUrl}chapters/${req.session.chapter_id}/upload`;
 
-        log.info('url');
+        log.info(url);
 
-        var options = {
+        const options = {
             method: 'POST',
-            url: _url,
+            url,
             headers: {
                 'Content-Type': 'multipart-formdata'
             },
             formData: {
                 file: {
-                    value: fs.createReadStream(
-                        'h5p/temporary-storage/' + contentId + '.h5p'
-                    ),
+                    value: fs.createReadStream(`h5p/temporary-storage/${contentId}.h5p`),
                     options: {
-                        filename: contentId + '.h5p',
+                        filename: `${contentId}.h5p`,
                         contentType: null
                     }
                 }

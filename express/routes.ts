@@ -52,9 +52,6 @@ export default function (): express.Router {
                 })
                 .then((response) => {
                     log.info('response.data');
-                    log.info(
-                        '------------------------------------------------------'
-                    );
                     log.info(response.data);
                     // res.render('home', { "sess": req.session });
                     res.render('success', {
@@ -64,7 +61,7 @@ export default function (): express.Router {
                 .catch((error) => {
                     res.redirect('/login?error=denied');
                 });
-            //Index shows list of chapters
+            // Index shows list of chapters
         }
     });
 

@@ -60,7 +60,7 @@ const start = async () => {
 
     const config = await new H5P.H5PConfig(
         new H5P.fsImplementations.JsonStorage(
-            path.resolve('express/config.json')
+            path.resolve('../config.json')
         )
     ).load();
 
@@ -134,16 +134,16 @@ const start = async () => {
     server.use('/api', api());
 
     server.use('/', routes());
-    server.get('/sess', function (req: any, res: any) {
+    server.get('/sess', (req: any, res: any) => {
         res.send(req.session.token);
     });
 
-    server.get('/logout', function (req: any, res: any) {
+    server.get('/logout', (req: any, res: any) => {
         req.session.destroy();
         res.redirect('/login');
     });
 
-    server.get('/login', function (req: any, res: any) {
+    server.get('/login', (req: any, res: any) => {
         if (req.session.token) {
             res.redirect('/');
         } else {

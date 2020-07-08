@@ -6,7 +6,7 @@ import { IUser } from '../src';
 export default class User implements IUser {
     constructor() {
         this.id = '1';
-        this.name = 'Firstname Surname';
+        this.name = 'FirstName Surname';
         this.canInstallRecommended = true;
         this.canUpdateAndInstallLibraries = true;
         this.canCreateRestricted = true;
