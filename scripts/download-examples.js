@@ -2,8 +2,8 @@ const axios = require('axios');
 const fs = require('fs-extra');
 const path = require('path');
 
-import { Logger } from "tslog";
-const log: Logger = new Logger({ name: "myLogger" });
+const { Logger } = require("tslog");
+const log = new Logger({ name: "myLogger" });
 
 /**
  * Downloads H5P packages from the H5P Hub for testing purposes.

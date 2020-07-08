@@ -60,7 +60,7 @@ const start = async () => {
 
     const config = await new H5P.H5PConfig(
         new H5P.fsImplementations.JsonStorage(
-            path.resolve('../config.json')
+            path.resolve('./express/config.json')
         )
     ).load();
 
