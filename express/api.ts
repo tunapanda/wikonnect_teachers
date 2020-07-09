@@ -87,7 +87,6 @@ export default function (): express.Router {
                 log.info('saved');
                 request(options, (error: string, response: { body: any }) => {
                     if (error) throw new Error(error);
-                    log.info(response.body);
                     res.redirect('/publish');
                 });
             }
