@@ -446,8 +446,7 @@
 
 
               {{#if this.contentUri }}
-                {{#if this.imageUrl }}
-                  {{!-- {{#is this.status 'draft'}} --}}
+                  {{#is this.status 'draft'}}
 
                     <div class="divTableCell" data-label="Publish"><a name="" id="" class="btn btn-success"
                         href="redirector/{{this.id}}?intent=publish" role="button">Publish</a></div>
