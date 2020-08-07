@@ -128,6 +128,40 @@ export default function (): express.Router {
       });
   });
 
+  router.post('/chapters/edit', async (req: any, res: any) => {
+    const url = `${config.wikonnectApiUrl}chapters`;
+    log.info(req.body);
+    log.info(url);
+    axios
+      .put(
+        url,
+        {
+          chapter: {
+            name: req.body.name,
+            description: req.body.description,
+            status: 'draft',
+            creatorId: req.session.username,
+            approved: false,
+            lessonId: '1'
+          }
+        },
+        { headers: { Authorization: `Bearer ${req.session.token}` } }
+      )
+      .then((response) => {
+        log.info('response.data');
+        log.info('response.data');
+
+        log.info(response.data);
+        req.session.chapter_id = response.data.chapter.id;
+        // res.redirect('/');§
+        res.redirect('/home');
+      })
+      .catch((error) => {
+        log.error('error');
+        res.redirect('/logout');
+      });
+  });
+
   router.post('/publish', async (req: any, res: any) => {
     let _url = `${config.wikonnectApiUrl}chapters/${req.session.chapter_id}`;
     log.info(req.body);
