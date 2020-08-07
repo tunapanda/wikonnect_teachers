@@ -53,6 +53,7 @@
     "fs-extra": "^9.0.1",
     "glob-promise": "^3.4.0",
     "handlebars-helpers": "^0.10.0",
+    "helper-date": "^1.0.1",
     "jsonpath": "^1.0.2",
     "merge": "^1.2.1",
     "mime-types": "^2.1.26",

@@ -10,6 +10,8 @@ import request from 'request';
 import { Logger } from 'tslog';
 const log: Logger = new Logger({ name: 'myLogger' });
 
+
+
 export default function (
   h5pEditor: H5P.H5PEditor,
   h5pPlayer: H5P.H5PPlayer
@@ -45,8 +47,91 @@ export default function (
       req.user
     );
 
-    res.send(JSON.stringify({ contentId }));
-    res.status(200).end();
+
+
+
+
+    log.info(contentId);
+    res.setHeader(
+      'Content-disposition',
+      `attachment; filename=${contentId}.h5p`
+    );
+
+    const writeStream = fs.createWriteStream(`h5p/temporary-storage/${contentId}.h5p`);
+    const packageFinishedPromise = new Promise((resolve) => {
+      writeStream.on('close', () => {
+        resolve();
+      });
+    });
+    await h5pEditor.exportContent(contentId, writeStream, req.user);
+    await packageFinishedPromise;
+    writeStream.close();
+
+    const url = `${config.wikonnectApiUrl}chapters/${req.session.chapter_id}/upload`;
+
+    log.info(url);
+
+    const options = {
+      method: 'POST',
+      url,
+      headers: {
+        'Content-Type': 'multipart-formdata'
+      },
+      formData: {
+        file: {
+          value: fs.createReadStream(`h5p/temporary-storage/${contentId}.h5p`),
+          options: {
+            filename: `${contentId}.h5p`,
+            contentType: null
+          }
+        }
+      }
+    };
+    request(options, (error, response) => {
+      // if (error.code === "EPIPE") {
+      //   process.exit(0);
+      // }
+      if (error) {
+        log.error(error.message);
+        // throw new Error(error);
+      }
+
+      let _url = `${config.wikonnectApiUrl}chapters/${req.session.chapter_id}`;
+      log.info(req.body);
+      log.info(_url);
+      axios
+        .put(
+          _url,
+          { chapter: { content_id: contentId } },
+          { headers: { Authorization: `Bearer ${req.session.token}` } }
+        )
+        .then((response) => {
+          log.info('response.data');
+          log.info('response.data');
+          log.info(response.data);
+          req.session.chapter_id = response.data.chapter.id;
+          // res.redirect('/');§
+          res.redirect('/publish?intent=success');
+        })
+        .catch((error) => {
+          log.error('error');
+          res.redirect('/logout');
+        });
+
+
+
+
+
+
+
+      log.info(response);
+      log.info('redirecting');
+      log.info(JSON.stringify({ contentId }));
+      res.send(JSON.stringify({ contentId }));
+      res.status(200).end();
+    });
+
+
   });
 
   router.get('/new', async (req, res) => {
@@ -63,7 +148,7 @@ export default function (
       !req.body.library ||
       !req.user
     ) {
-      res.status(400).send('Make sure you create the h5p before you click preview , Refresh page to retry ').end();
+      res.status(400).send('Make sure you create the h5p before you click preview , <a href="/new/h5p">Click here to try again</a> ').end();
       return;
     }
     const contentId = await h5pEditor.saveOrUpdateContent(
@@ -118,6 +203,35 @@ export default function (
         log.error(error.message);
         // throw new Error(error);
       }
+
+      let _url = `${config.wikonnectApiUrl}chapters/${req.session.chapter_id}`;
+      log.info(req.body);
+      log.info(_url);
+      axios
+        .put(
+          _url,
+          { chapter: { content_id: contentId } },
+          { headers: { Authorization: `Bearer ${req.session.token}` } }
+        )
+        .then((response) => {
+          log.info('response.data');
+          log.info('response.data');
+          log.info(response.data);
+          req.session.chapter_id = response.data.chapter.id;
+          // res.redirect('/');§
+          res.redirect('/publish?intent=success');
+        })
+        .catch((error) => {
+          log.error('error');
+          res.redirect('/logout');
+        });
+
+
+
+
+
+
+
       log.info(response);
       log.info('redirecting');
       log.info(JSON.stringify({ contentId }));

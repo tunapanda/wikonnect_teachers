@@ -25,7 +25,7 @@ export default function (): express.Router {
   // }));
   router.use((req, res, next) => {
     log.info('Time:', new Date());
-    log.info(req.body);
+    //log.info(req.body);
     next();
   });
 
@@ -151,6 +151,32 @@ export default function (): express.Router {
         res.redirect('/logout');
       });
   });
+
+
+  router.get('/delete/:id', async (req: any, res: any) => {
+    let _url = `${config.wikonnectApiUrl}chapters/${req.params.id}`;
+    //log.info(req.body);
+    log.info(_url);
+    console.log(req.session.token)
+    axios.delete(
+      _url,
+      { headers: { Authorization: `Bearer ${req.session.token}` } }
+    )
+      .then((response) => {
+        log.info('response.data');
+        //log.info(response.data);
+        req.session.chapter_id = response.data.chapter.id;
+        // res.redirect('/');§
+        //res.redirect('/home');
+      })
+      .catch((error) => {
+        log.error('error');
+        log.error(error);
+        //res.redirect('/logout');
+      });
+  });
+
+
   router.post('/unpublish', async (req: any, res: any) => {
     const _url = `${config.wikonnectApiUrl}chapters/${req.session.chapter_id}`;
     log.info(req.body);

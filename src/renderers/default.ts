@@ -190,7 +190,7 @@ ${model.scripts
   <div class="card">
   <img class="card-img-top" src="holder.js/100x180/" alt="">
   <div class="card-body">
-    <h4 class="card-title">Actions</h4>
+    <h4 class="card-title">Proceed</h4>
     <p class="card-text">    <input type="submit" name="submit" value="Preview H5P" class="btn btn-success">
     </p>
   </div>
