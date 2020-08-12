@@ -128,8 +128,8 @@ export default function (): express.Router {
       });
   });
 
-  router.post('/chapters/edit', async (req: any, res: any) => {
-    const url = `${config.wikonnectApiUrl}chapters`;
+  router.post('/chapters/edit/:id', async (req: any, res: any) => {
+    const url = `${config.wikonnectApiUrl}chapters/${req.params.id}`;
     log.info(req.body);
     log.info(url);
     axios
@@ -154,10 +154,11 @@ export default function (): express.Router {
         log.info(response.data);
         req.session.chapter_id = response.data.chapter.id;
         // res.redirect('/');§
-        res.redirect('/home');
+        res.redirect('/');
       })
       .catch((error) => {
         log.error('error');
+        log.error(error);
         res.redirect('/logout');
       });
   });

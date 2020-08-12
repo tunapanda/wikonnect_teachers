@@ -421,7 +421,7 @@
               <div id="editH5p{{this.id}}" class="modal fade">
                 <div class="modal-dialog">
                   <div class="modal-content">
-                    <form method="POST" action="/api/chapters/edit">
+                    <form method="POST" action="/api/chapters/edit/{{this.id}}">
                       <div class="modal-header">
                         <h4 class="modal-title">Edit H5P</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -435,14 +435,14 @@
                         <div class="form-group">
                           <label>Description</label>
                           <textarea data-role="tagsinput" name="description" class="form-control"
-                            required><{{this.name}}</textarea>
+                            required>{{this.description}}</textarea>
                         </div>
 
 
                       </div>
                       <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="submit" class="btn btn-success" value="Add">
+                        <input type="submit" class="btn btn-success" value="Update">
                       </div>
                     </form>
                   </div>
