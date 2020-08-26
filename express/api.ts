@@ -219,7 +219,7 @@ export default function (): express.Router {
     axios
       .put(
         _url,
-        { chapter: { status: 'draft' } },
+        { chapter: { status: 'draft', approval: "true" } },
         { headers: { Authorization: `Bearer ${req.session.token}` } }
       )
       .then((response) => {
