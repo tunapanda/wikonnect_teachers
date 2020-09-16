@@ -174,6 +174,30 @@ ${model.scripts
   })(H5P.jQuery);
   </script>
   <div class="container-fluid">
+  <div class="table-title">
+  <div class="row">
+    <div class="col-sm-6">
+      <h2>Preview <b>H5P</b></h2>
+    </div>
+    <div class="col-sm-6">
+    <a href="/" class="btn btn-primary" data-toggle="modal"><i
+    class="material-icons">&#xE88A;</i> <span>Go Home</span></a>
+
+
+    <a href="/h5p/edit/${
+  model.contentId
+  }" class="btn btn-warning" data-toggle="modal"><i
+    class="material-icons">&#xE254;</i> <span>Edit H5P</span></a>
+
+
+    <a href="/thumbnail" class="btn btn-success" data-toggle="modal"><i
+    class="material-icons">&#xE3F4;</i> <span>Create Thumbnail</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="h5p-content" data-content-id="${model.contentId}"></div>
+
 
     <form method="post" enctype="multipart/form-data" id="h5p-content-form">
 
