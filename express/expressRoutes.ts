@@ -6,7 +6,6 @@ import * as H5P from '../src';
 import * as config from './config.json';
 import axios from 'axios';
 import request from 'request';
-
 import { Logger } from 'tslog';
 const log: Logger = new Logger({ name: 'myLogger' });
 
@@ -21,6 +20,11 @@ export default function (
     log.info('Time:', new Date());
     next();
   });
+
+  function removeFrameguard(req, res, next) {
+    res.removeHeader('X-Frame-Options')
+    next()
+  }
 
   router.get(`${h5pEditor.config.playUrl}/:contentId`, async (req, res) => {
     try {
@@ -134,11 +138,13 @@ export default function (
 
   });
 
-  router.get('/new', async (req, res) => {
+  router.get('/new', removeFrameguard, async (req, res) => {
     const page = await h5pEditor.render(undefined);
     res.send(page);
     res.status(200).end();
   });
+
+
 
   router.post('/new', async (req: any, res) => {
     if (

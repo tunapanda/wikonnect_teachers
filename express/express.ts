@@ -1,3 +1,4 @@
+
 import bodyParser from 'body-parser';
 import express from 'express';
 import fileUpload from 'express-fileupload';
@@ -14,13 +15,31 @@ import api from './api';
 import startPageRenderer from './startPageRenderer';
 import User from './User';
 import session from 'express-session';
+import cors from 'cors';
+import Helmet from "helmet";
 
-
+import createIframe from 'node-iframe';
 
 import hbshelpers from 'handlebars-helpers';
 
 import { Logger } from 'tslog';
 const log: Logger = new Logger({ name: 'myLogger' });
+
+const options: cors.CorsOptions = {
+  allowedHeaders: [
+    'Origin',
+    'X-Requested-With',
+    'Content-Type',
+    'Accept',
+    'X-Access-Token',
+  ],
+  credentials: true,
+  methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+};
+
+//use cors middleware
+
 
 
 /**
@@ -38,8 +57,7 @@ function displayIps(port: string): void {
       .forEach((int) =>
         // tslint:disable-next-line: no-console
         log.info(
-          `http://${int.family === 'IPv6' ? '[' : ''}${int.address}${
-          int.family === 'IPv6' ? ']' : ''
+          `http://${int.family === 'IPv6' ? '[' : ''}${int.address}${int.family === 'IPv6' ? ']' : ''
           }:${port}`
         )
       );
@@ -82,6 +100,12 @@ const start = async () => {
 
   const server = express();
 
+  // server.use(function (req, res, next) {
+  //   res.header("Access-Control-Allow-Origin", "*");
+  //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  //   next();
+  // });
+
   server.use(
     session({
       key: 'user_sid',
@@ -93,7 +117,10 @@ const start = async () => {
       }
     })
   );
+  //server.use(cors);
   server.use(express.static('public'));
+
+
   const multihelpers = hbshelpers();
 
   server.engine(
@@ -117,10 +144,55 @@ const start = async () => {
     })
   );
 
+  // server.use(
+  //   Helmet({
+  //     contentSecurityPolicy: {
+  //       directives: {
+  //         scriptSrc: ["'self'", "'unsafe-eval'", 'blob:', 'data:'],
+  //         connectSrc: [`'self'`],
+  //         defaultSrc: ["'self'"],
+  //         frameAncestors: [
+  //           'http://localhost:4200',
+  //           'https://boo.example.com'
+  //         ]
+  //       }
+  //     },
+  //     frameguard: false
+  //   })
+  // );
+
+
+  server.use(Helmet({
+    frameguard: false
+  }));
+
+  server.use(
+    Helmet.contentSecurityPolicy({
+      directives: {
+        "default-src": ["'self'"],
+        frameAncestors: [
+          'http://localhost:4200',
+          'http://localhost:4200',
+          'http://localhost:8080',
+          'https://boo.example.com'
+        ],
+        "connect-src": ["'self'", "'unsafe-inline'"],
+        "img-src": ["'self'", "data:"],
+        "style-src-elem": ["'self'", "data:"],
+        "script-src": ["'unsafe-inline'", "'self'", 'http://localhost:8080/h5p/editor/scripts/h5peditor.js', 'code.jquery.com', 'maxcdn.bootstrapcdn.com'],
+        "object-src": ["'none'"],
+      },
+    })
+  );
+
+  server.use(cors(options));
+
+
   server.use((req: any, res: any, next) => {
     req.user = new User();
     next();
   });
+
 
   server.use(i18nextExpressMiddleware.handle(i18next));
 

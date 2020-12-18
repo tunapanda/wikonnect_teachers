@@ -4,9 +4,9 @@ import path from 'path';
 import axios from 'axios';
 import request from 'request';
 import * as config from './config.json';
-
 import { Logger } from 'tslog';
 const log: Logger = new Logger({ name: 'myLogger' });
+import jwt_decode from "jwt-decode";
 
 // let storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
@@ -19,33 +19,55 @@ const log: Logger = new Logger({ name: 'myLogger' });
 
 export default function (): express.Router {
   const router = express.Router();
+
   // router.use(fileUpload({
   //   useTempFiles: true,
   //   tempFileDir: '/uploads/'
   // }));
   router.use((req, res, next) => {
     log.info('Time:', new Date());
-    //log.info(req.body);
+    log.info(req.body);
     next();
   });
 
   router.post('/login', async (req: any, res: any) => {
-    const url = config.wikonnectApiUrl + 'auth';
+    const url = config.wikonnectApiUrl + 'auth/';
     log.info(url)
+
     axios
       .post(url, {
         username: req.body.username,
         password: req.body.password
       })
       .then((response) => {
+        log.info("hapa")
+
         if (req.session.token) {
           req.session.destroy();
+          log.info("deleteing prev token")
+
         }
+        var decoded: any = jwt_decode(response.data.token);
+
+        console.log("decoded")
+        console.log(decoded)
+
+        var obj = JSON.parse(JSON.stringify(decoded));
+
+        console.log(obj.data.id)
+        // console.log(response.data)
         req.session.token = response.data.token;
         req.session.username = req.body.username;
+        req.session.user_id = obj.data.id;
+        req.session.user_data = obj.data;
+        // req.session.id = req.bod
+        log.info("redirecting")
+
         res.redirect('/');
       })
       .catch((error) => {
+        console.log("failed")
+        console.log(error)
         res.redirect('/login?error=denied');
       });
   });
@@ -67,7 +89,7 @@ export default function (): express.Router {
         log.error('save failed');
         log.error(err);
       } else {
-        log.info('posting to', `${config.wikonnectApiUrl}chapters/${req.session.chapter_id}/chapter-image`); // the uploaded file object
+        log.info('posting to', `${config.wikonnectApiUrl}chapters/${req.session.chapter_id}/chapter-image/`); // the uploaded file object
         const _url = `${config.wikonnectApiUrl}chapters/${req.session.chapter_id}/chapter-image`;
         const options = {
           method: 'POST',
@@ -95,7 +117,7 @@ export default function (): express.Router {
   });
 
   router.post('/chapters', async (req: any, res: any) => {
-    const url = `${config.wikonnectApiUrl}chapters`;
+    const url = `${config.wikonnectApiUrl}chapters/`;
     log.info(req.body);
     log.info(url);
     axios
@@ -128,7 +150,7 @@ export default function (): express.Router {
       });
   });
 
-  router.post('/chapters/edit/:id', async (req: any, res: any) => {
+  router.post('/chapters/edit/:id/', async (req: any, res: any) => {
     const url = `${config.wikonnectApiUrl}chapters/${req.params.id}`;
     log.info(req.body);
     log.info(url);
@@ -164,7 +186,7 @@ export default function (): express.Router {
   });
 
   router.post('/publish', async (req: any, res: any) => {
-    let _url = `${config.wikonnectApiUrl}chapters/${req.session.chapter_id}`;
+    let _url = `${config.wikonnectApiUrl}chapters/${req.session.chapter_id}/`;
     log.info(req.body);
     log.info(_url);
     axios
@@ -189,7 +211,7 @@ export default function (): express.Router {
 
 
   router.get('/delete/:id', async (req: any, res: any) => {
-    let _url = `${config.wikonnectApiUrl}chapters/${req.params.id}`;
+    let _url = `${config.wikonnectApiUrl}chapters/${req.params.id}/`;
     //log.info(req.body);
     log.info(_url);
     console.log(req.session.token)
@@ -213,7 +235,7 @@ export default function (): express.Router {
 
 
   router.post('/unpublish', async (req: any, res: any) => {
-    const _url = `${config.wikonnectApiUrl}chapters/${req.session.chapter_id}`;
+    const _url = `${config.wikonnectApiUrl}chapters/${req.session.chapter_id}/`;
     log.info(req.body);
     log.info(_url);
     axios

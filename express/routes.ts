@@ -15,19 +15,31 @@ export default function (): express.Router {
 
   router.get('/', async (req: any, res: any) => {
     if (!req.session.token) {
+
+      console.log("no session")
       res.redirect('/login?error=denied');
+
     } else {
-      const url = `${config.wikonnectApiUrl}chapters/teach`;
-      axios
+
+      console.log(" session exists")
+      // console.log(req.session.token)
+
+      const url = `${config.wikonnectApiUrl}chapters?creatorId=${req.session.user_id}`;
+
+      //console.log(url)
+      let q = axios
         .get(url, {
           headers: { Authorization: `Bearer ${req.session.token}` }
         })
         .then((response) => {
-          // log.info('response.data');
-          // log.info(response.data);
+
+          log.info('response.data');
+          log.info(response.data);
           res.render('home', { "chapters": response.data.chapter });
         })
         .catch((error) => {
+          console.log("err")
+          console.log(error)
           res.redirect('/login?error=denied');
         });
     }

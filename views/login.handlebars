@@ -120,19 +120,19 @@
   <div class="login-form">
     {{#if msg}}
 
-    <div class="alert alert-warning alert-dismissible  show" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <strong>{{msg}}</strong>
-    </div>
+      <div class="alert alert-warning alert-dismissible  show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>{{msg}}</strong>
+      </div>
 
     {{/if}}
 
     <script>
       $(".alert").alert();
     </script>
-    <form action="/api/login" method="post">
+    <form action="/api/login/" method="post">
       <div class="avatar"><i class="material-icons">&#xE7FF;</i></div>
       <h4 class="modal-title">Login to Your Wikonnect Account</h4>
       <div class="form-group">
