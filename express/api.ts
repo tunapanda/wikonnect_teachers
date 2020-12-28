@@ -26,7 +26,7 @@ export default function (): express.Router {
   // }));
   router.use((req, res, next) => {
     log.info('Time:', new Date());
-    log.info(req.body);
+    // log.info(req.body);
     next();
   });
 
