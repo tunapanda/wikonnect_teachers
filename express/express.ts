@@ -15,28 +15,24 @@ import api from './api';
 import startPageRenderer from './startPageRenderer';
 import User from './User';
 import session from 'express-session';
-import cors from 'cors';
-import Helmet from "helmet";
-
-import createIframe from 'node-iframe';
 
 import hbshelpers from 'handlebars-helpers';
 
 import { Logger } from 'tslog';
 const log: Logger = new Logger({ name: 'myLogger' });
 
-const options: cors.CorsOptions = {
-  allowedHeaders: [
-    'Origin',
-    'X-Requested-With',
-    'Content-Type',
-    'Accept',
-    'X-Access-Token',
-  ],
-  credentials: true,
-  methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
-  preflightContinue: false,
-};
+// const options: cors.CorsOptions = {
+//   allowedHeaders: [
+//     'Origin',
+//     'X-Requested-With',
+//     'Content-Type',
+//     'Accept',
+//     'X-Access-Token',
+//   ],
+//   credentials: true,
+//   methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+//   preflightContinue: false,
+// };
 
 //use cors middleware
 
@@ -162,30 +158,30 @@ const start = async () => {
   // );
 
 
-  server.use(Helmet({
-    frameguard: false
-  }));
+  // server.use(Helmet({
+  //   frameguard: false
+  // }));
 
-  server.use(
-    Helmet.contentSecurityPolicy({
-      directives: {
-        "default-src": ["'self'"],
-        frameAncestors: [
-          'http://localhost:4200',
-          'http://localhost:4200',
-          'http://localhost:8080',
-          'https://boo.example.com'
-        ],
-        "connect-src": ["'self'", "'unsafe-inline'"],
-        "img-src": ["'self'", "data:"],
-        "style-src-elem": ["'self'", "data:"],
-        "script-src": ["'unsafe-inline'", "'self'", 'http://localhost:8080/h5p/editor/scripts/h5peditor.js', 'code.jquery.com', 'maxcdn.bootstrapcdn.com'],
-        "object-src": ["'none'"],
-      },
-    })
-  );
+  // server.use(
+  //   Helmet.contentSecurityPolicy({
+  //     directives: {
+  //       "default-src": ["'self'"],
+  //       frameAncestors: [
+  //         'http://localhost:4200',
+  //         'http://localhost:4200',
+  //         'http://localhost:8080',
+  //         'https://boo.example.com'
+  //       ],
+  //       "connect-src": ["'self'", "'unsafe-inline'"],
+  //       "img-src": ["'self'", "data:"],
+  //       "style-src-elem": ["'self'", "data:"],
+  //       "script-src": ["'unsafe-inline'", "'self'", 'http://localhost:8080/h5p/editor/scripts/h5peditor.js', 'code.jquery.com', 'maxcdn.bootstrapcdn.com'],
+  //       "object-src": ["'none'"],
+  //     },
+  //   })
+  // );
 
-  server.use(cors(options));
+  // server.use(cors(options));
 
 
   server.use((req: any, res: any, next) => {
