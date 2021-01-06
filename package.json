@@ -41,7 +41,7 @@
   "dependencies": {
     "@types/request": "^2.48.5",
     "ajv": "^6.12.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "axios-fileupload": "0.0.1",
     "crc": "^3.8.0",
     "debug": "^4.1.1",
