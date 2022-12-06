@@ -59,7 +59,7 @@
     "mime-types": "^2.1.26",
     "mkdirp": "^1.0.3",
     "promisepipe": "^3.0.0",
-    "qs": "^6.9.3",
+    "qs": "^6.9.7",
     "request": "^2.88.2",
     "sanitize-filename": "^1.6.3",
     "shortid": "2.2.15",
